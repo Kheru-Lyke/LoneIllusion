@@ -1,171 +1,41 @@
 ///-----------------------------------------------------------------
 /// Author : Gabriel Massé
-/// Date : 07/02/2020 19:24
+/// Date : 10/02/2020 22:02
 ///-----------------------------------------------------------------
 
-using System;
 using System.Collections.Generic;
-using Com.SchizophreniaStudios.LoneIllusionDestiny.Common.CharacterMovements;
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
-using System.Linq;
+using UnityEngine.SceneManagement;
 
 namespace Com.SchizophreniaStudios.LoneIllusionDestiny.Common {
-    public class GameManager : MonoBehaviour
-    {
+	public class GameManager : MonoBehaviour {
 
-        [SerializeField] private DialogueChunk _currentDialogueChunk;
+        [SerializeField] string mainSceneName;
+        [SerializeField] List<DialogueChunk> chapters;
 
-        [Header("UI management")]
-        [SerializeField] private TextMeshProUGUI text;
-        [SerializeField] private TextMeshProUGUI speakerName;
-        [SerializeField] private Transform choiceUI;
-        [SerializeField] private GameObject choiceButtonPrefab;
-
-        [Header("Character management")]
-        [SerializeField] private Transform left;
-        [SerializeField] private Transform center;
-        [SerializeField] private Transform right;
-        [Space]
-        [SerializeField] private GameObject characterVisualPrefab;
-
-        [Header("Scene management")]
-        [SerializeField] private Image background;
-        [SerializeField] private AudioSource music;
-        [SerializeField] private AudioSource backgroundEffect;
-
-        private int lineIndex = 0;
-        private Character currentSpeaker;
-        private Dictionary<Character, GameObject> charactersInScene = new Dictionary<Character, GameObject>();
-        private DialogueLine line;
-
-
-        //  Dialogue management
-        public void ReadLine()
+        public void LoadChapter(int chapterIndex)
         {
-            line = CurrentDialogueChunk.Lines[lineIndex];
-
-            if (currentSpeaker != line.Speaker)
+            SceneManager.LoadScene(mainSceneName);
+            SceneManager.sceneLoaded += delegate
             {
-                ChangeSpeaker(line.Speaker);
-                currentSpeaker = line.Speaker;
-            }
-
-            if (line.Text != "") text.text = line.Text;
-            if (line.Anonymous) speakerName.text = "???";
-            else speakerName.text = line.Speaker.CharacterName;
-
-            line.CharacterMovement?.Move();
-            UpdateCharacterSprite();
-            if (line is DialogueChoice) DisplayChoice();
-
-            lineIndex++;
+                VNManager.Instance.CurrentDialogueChunk = chapters[chapterIndex];
+                VNManager.Instance.ReadLine();
+            };
         }
 
-        private void DisplayChoice()
+        public void LoadGame()
         {
-            CanvasGroup Ui = choiceUI.GetComponentInParent<CanvasGroup>();
-            if (Ui != null) Ui.interactable = true;
-
-            GameObject button;
-            DialogueChoice choice = line as DialogueChoice;
-
-            for (int i = 0; i < choice.Choices.Count; i++)
-            {
-                var nameChunkPair = choice.Choices.ElementAt(i);
-
-                button = Instantiate(choiceButtonPrefab, choiceUI);
-
-                button.GetComponentInChildren<TextMeshProUGUI>().text = nameChunkPair.Key;
-                button.GetComponent<Button>().onClick.AddListener(delegate
-                {
-                    CurrentDialogueChunk = nameChunkPair.Value;
-                    Ui.interactable = false;
-
-                    for (int j = Ui.transform.childCount - 1; j >= 0; j--)
-                    {
-                        Destroy(Ui.transform.GetChild(j).gameObject);
-                    }
-
-                    ReadLine();
-                });
-            }
+            LoadChapter(Config.Instance.SavedGameChapter);
         }
 
-        public DialogueChunk CurrentDialogueChunk
+        public void StartNewGame()
         {
-            get => _currentDialogueChunk;
-            set
-            {
-                if (value == null)
-                {
-                    Debug.LogError("No new dialogue chunk");
-                    return;
-                }
-                lineIndex = 0;
-                _currentDialogueChunk = value;
-            }
+            LoadChapter(0);
         }
 
-        //  Textbox management
-        private void ChangeSpeaker(Character newSpeaker)
-        {
-            text.font = newSpeaker.TextFont;
-            text.fontStyle = newSpeaker.TextFontStyle;
-            text.color = newSpeaker.TextColor;
-        }
-
-        //  Character management
-        private void UpdateCharacterSprite()
-        {
-            charactersInScene.TryGetValue(line.Speaker, out GameObject visual);
-            if (visual != null)
-            {
-                Image visualIMG = visual.GetComponent<Image>();
-                if (visualIMG != null) visualIMG.sprite = line.Speaker.Sprites[line.Emotion];
-            }
-        }
-
-        public void AddCharacterToScene()
-        {
-            GameObject characterVisual = Instantiate(characterVisualPrefab, center);
-
-            charactersInScene.Add(line.Speaker, characterVisual);
-        }
-        internal void RemoveCharacterFromScreen()
-        {
-            Destroy(charactersInScene[currentSpeaker]);
-            charactersInScene[currentSpeaker] = null;
-        }
-
-        public void MoveTo(Position position)
-        {
-            Transform target;
-            if (position == Position.LEFT) target = left;
-            else if (position == Position.CENTER) target = center;
-            else target = right;
-
-            charactersInScene[line.Speaker]?.transform.SetParent(target);
-        }
-
-        //  Scene Management
-
-        internal void ChangeScene(Sprite newBackground, AudioClip newMusic, AudioClip newBackgroundEffect)
-        {
-            background.sprite = newBackground;
-
-            music.clip = newMusic;
-            music.Play();
-
-            backgroundEffect.clip = newBackgroundEffect;
-            backgroundEffect.Play();
-        }
-
-        //  Instance related code
-        private static GameManager instance;
-        public static GameManager Instance { get { return instance; } }
-
+        //Instance related code
+		private static GameManager instance;
+		public static GameManager Instance { get { return instance; } }
 
         private void Awake()
         {
@@ -176,11 +46,12 @@ namespace Com.SchizophreniaStudios.LoneIllusionDestiny.Common {
             }
 
             instance = this;
-        }
 
-        private void OnDestroy()
-        {
-            if (this == instance) instance = null;
+            DontDestroyOnLoad(this.gameObject);
         }
-    }
+		
+		private void OnDestroy(){
+			if (this == instance) instance = null;
+		}
+	}
 }

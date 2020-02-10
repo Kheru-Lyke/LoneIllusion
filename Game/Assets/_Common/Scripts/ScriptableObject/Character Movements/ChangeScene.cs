@@ -20,8 +20,8 @@ namespace Com.SchizophreniaStudios.LoneIllusionDestiny.Common.CharacterMovements
         [SerializeField] DialogueChunk nextDialogue;
         public override void Move()
         {
-            GameManager.Instance.ChangeScene(newBackground, newMusic, newBackgroundEffect);
-            GameManager.Instance.CurrentDialogueChunk = nextDialogue;
+            VNManager.Instance.ChangeScene(newBackground, newMusic, newBackgroundEffect);
+            VNManager.Instance.CurrentDialogueChunk = nextDialogue;
         }
     }
 }

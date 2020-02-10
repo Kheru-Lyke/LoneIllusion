@@ -16,7 +16,7 @@ namespace Com.SchizophreniaStudios.LoneIllusionDestiny.Common.CharacterMovements
         [SerializeField] private Position position;
         public override void Move()
         {
-            GameManager.Instance.MoveTo(position);
+            VNManager.Instance.MoveTo(position);
         }
     }
 }

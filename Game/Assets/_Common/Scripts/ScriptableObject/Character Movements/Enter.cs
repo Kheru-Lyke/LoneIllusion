@@ -15,7 +15,7 @@ namespace Com.SchizophreniaStudios.LoneIllusionDestiny.Common.CharacterMovements
     {
         public override void Move()
         {
-            GameManager.Instance.AddCharacterToScene();
+            VNManager.Instance.AddCharacterToScene();
         }
     }
 }

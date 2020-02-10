@@ -15,7 +15,7 @@ namespace Com.SchizophreniaStudios.LoneIllusionDestiny.Common.CharacterMovements
     {
         public override void Move()
         {
-            GameManager.Instance.RemoveCharacterFromScreen();
+            VNManager.Instance.RemoveCharacterFromScreen();
         }
     }
 }
