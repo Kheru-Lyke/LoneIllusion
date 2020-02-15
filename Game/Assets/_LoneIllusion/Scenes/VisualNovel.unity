@@ -336,7 +336,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0717e9d1e3a1e6945b51442cd8c2fceb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _currentDialogueChunk: {fileID: 11400000, guid: 14916faf30e1d9f4bb6a35a0c2f1d8d2,
+  _currentDialogueChunk: {fileID: 11400000, guid: a3757567b6748e045aeb902b5834167d,
     type: 2}
   text: {fileID: 1487590850}
   speakerName: {fileID: 680571363}

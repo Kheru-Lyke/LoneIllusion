@@ -17,7 +17,7 @@ namespace Com.SchizophreniaStudios.LoneIllusionDestiny.Common {
 
     [CreateAssetMenu(
         fileName = "Character",
-        menuName = "Visual Novel/Character"
+        menuName = "Visual Novel/Character Details"
     )]
 
     public class Character : ScriptableObject
@@ -28,10 +28,10 @@ namespace Com.SchizophreniaStudios.LoneIllusionDestiny.Common {
         [SerializeField] private TMP_FontAsset _textFont;
         [SerializeField] private FontStyles _textFontStyle;
 
-        public string CharacterName => _characterName; 
-        public Color TextColor => _textColor; 
-        public TMP_FontAsset TextFont => _textFont;
-        public FontStyles TextFontStyle => _textFontStyle; 
-        public EnumSprite_SerializableDictionary Sprites => _sprites;
+        virtual public string CharacterName => _characterName; 
+        virtual public Color TextColor => _textColor; 
+        virtual public TMP_FontAsset TextFont => _textFont;
+        virtual public FontStyles TextFontStyle => _textFontStyle; 
+        virtual public EnumSprite_SerializableDictionary Sprites => _sprites;
     }
 }

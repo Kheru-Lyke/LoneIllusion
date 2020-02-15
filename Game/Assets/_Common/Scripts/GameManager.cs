@@ -10,6 +10,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
+using Com.SchizophreniaStudios.LoneIllusionDestiny.LoneIllusion;
 
 namespace Com.SchizophreniaStudios.LoneIllusionDestiny.Common {
     public class GameManager : MonoBehaviour
@@ -36,8 +37,8 @@ namespace Com.SchizophreniaStudios.LoneIllusionDestiny.Common {
         [SerializeField] private AudioSource backgroundEffect;
 
         private int lineIndex = 0;
-        private Character currentSpeaker;
-        private Dictionary<Character, GameObject> charactersInScene = new Dictionary<Character, GameObject>();
+        private CharacterChanging currentSpeaker;
+        private Dictionary<CharacterChanging, GameObject> charactersInScene = new Dictionary<CharacterChanging, GameObject>();
         private DialogueLine line;
 
 
@@ -46,6 +47,12 @@ namespace Com.SchizophreniaStudios.LoneIllusionDestiny.Common {
         {
             line = CurrentDialogueChunk.Lines[lineIndex];
 
+
+            if (line.Speaker.CheckState())
+            {
+                ChangeSpeakerState(line.Speaker);
+                return;
+            }
             if (currentSpeaker != line.Speaker)
             {
                 ChangeSpeaker(line.Speaker);
@@ -61,6 +68,14 @@ namespace Com.SchizophreniaStudios.LoneIllusionDestiny.Common {
             if (line is DialogueChoice) DisplayChoice();
 
             lineIndex++;
+
+            //  TEMP
+            PlayerData.bluntLevel = PlayerData.cunningLevel = PlayerData.nobleLevel = PlayerData.trueLevel = 3;
+        }
+
+        private void ChangeSpeakerState(CharacterChanging speaker)
+        {
+            Debug.Log("This is a change cutscene! Congrats! It's " + speaker.CharacterName);
         }
 
         private void DisplayChoice()
@@ -109,7 +124,7 @@ namespace Com.SchizophreniaStudios.LoneIllusionDestiny.Common {
         }
 
         //  Textbox management
-        private void ChangeSpeaker(Character newSpeaker)
+        private void ChangeSpeaker(CharacterChanging newSpeaker)
         {
             text.font = newSpeaker.TextFont;
             text.fontStyle = newSpeaker.TextFontStyle;
