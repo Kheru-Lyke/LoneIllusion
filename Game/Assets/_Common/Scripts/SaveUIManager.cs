@@ -1,4 +1,5 @@
 using Com.SchizophreniaStudios.LoneIllusionDestiny.Common;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -9,22 +10,36 @@ using UnityEngine.UI;
 public class SaveUIManager : MonoBehaviour
 {
     [SerializeField] private GameObject saveButtonPrefab = null;
+    [SerializeField] private Button back = null;
     [SerializeField] private Transform saveParent = null;
     [SerializeField] private int saveStateNumber = 6;
 
-    private void Start()
-    {
-        SaveUI();
-    }
+    [SerializeField] private Animator UiAnim = null;
+
+    private bool toDestroy = false;
 
     public void LoadUI()
     {
-        CreateButtons(true);
+        if (toDestroy) DestroyButtons();
+        else CreateButtons(true);
+        toDestroy = !toDestroy;
+    }
+
+    private void DestroyButtons()
+    {
+        for (int i = 0; i < saveParent.childCount; i++)
+        {
+            Destroy(saveParent.GetChild(i).gameObject);
+        }
+
+        back.onClick.RemoveAllListeners();
     }
 
     public void SaveUI()
     {
-        CreateButtons(false);
+        if (toDestroy) DestroyButtons();
+        else CreateButtons(false);
+        toDestroy = !toDestroy;
     }
 
     private void CreateButtons(bool load)
@@ -40,23 +55,30 @@ public class SaveUIManager : MonoBehaviour
             if (load)
             {
                 if (!File.Exists(Path.Combine(Application.persistentDataPath, "Save_" + i))) saveState.GetComponent<Button>().interactable = false;
-                OnClickDo = delegate { GameManager.Instance.LoadProgression(btnNmbr); };
+                OnClickDo = delegate
+                {
+                    GameManager.Instance.LoadProgression(btnNmbr);
+                    UiAnim.SetTrigger("Load");
+                    UiAnim.SetTrigger("Start");
+                };
+                back.onClick.AddListener(delegate { UiAnim.SetTrigger("Load"); });
             }
-            else OnClickDo = delegate { GameManager.Instance.SaveProgression(btnNmbr); };
+            else
+            {
+                OnClickDo = delegate { GameManager.Instance.SaveProgression(btnNmbr);
+                    UiAnim.SetTrigger("Save"); };
+                back.onClick.AddListener(delegate { UiAnim.SetTrigger("Save"); });
+            }
 
             if (File.Exists(Path.Combine(Application.persistentDataPath, "Save_" + i + ".png")))
             {
-                byte[] bytes = File.ReadAllBytes(Path.Combine(Application.persistentDataPath, "Save_" + i + ".png"));
-                Texture2D texture = new Texture2D(Screen.width, Screen.height, TextureFormat.RGB24, false);
-                texture.filterMode = FilterMode.Trilinear;
-                texture.LoadImage(bytes);
-                Sprite sprite = Sprite.Create(texture, new Rect(0, 0, Screen.width, Screen.height), new Vector2(0.5f, 0.0f), 1.0f);
-
+                Sprite sprite = ScreenshotHandler.GetSpriteFromFile(Path.Combine(Application.persistentDataPath, "Save_" + i + ".png"));
                 saveState.GetComponent<Image>().sprite = sprite;
             }
 
 
             saveState.GetComponent<Button>().onClick.AddListener(OnClickDo);
         }
+
     }
 }
