@@ -22,11 +22,11 @@ namespace Com.SchizophreniaStudios.LoneIllusionDestiny.Common {
 
     public class Character : ScriptableObject
     {
-        [SerializeField] private string _characterName;
-        [SerializeField] private EnumSprite_SerializableDictionary _sprites;
-        [SerializeField] private Color _textColor;
-        [SerializeField] private TMP_FontAsset _textFont;
-        [SerializeField] private FontStyles _textFontStyle;
+        [SerializeField] private string _characterName = "Empty";
+        [SerializeField] private EnumSprite_SerializableDictionary _sprites = new EnumSprite_SerializableDictionary();
+        [SerializeField] private Color _textColor = Color.white;
+        [SerializeField] private TMP_FontAsset _textFont = null;
+        [SerializeField] private FontStyles _textFontStyle = FontStyles.Normal;
 
         virtual public string CharacterName => _characterName; 
         virtual public Color TextColor => _textColor; 

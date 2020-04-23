@@ -20,6 +20,11 @@ namespace Com.SchizophreniaStudios.LoneIllusionDestiny.LoneIllusion
     public abstract class CharacterChanging : ScriptableObject
     {
 
+        public static implicit operator Character(CharacterChanging character)
+        {
+            return character.ReturnCurrentCharacter();
+        }
+
         abstract public bool CheckState();
         abstract protected Character ReturnCurrentCharacter();
 
@@ -32,8 +37,8 @@ namespace Com.SchizophreniaStudios.LoneIllusionDestiny.LoneIllusion
 
     public class CharacterChanginWithRelationship : CharacterChanging
     {
-        [SerializeField] private StateCharacter_SerializableDictionary characterPerState;
-        [SerializeField] private List<float> relationShipValueLevels;
+        [SerializeField] private StateCharacter_SerializableDictionary characterPerState = null;
+        [SerializeField] private List<float> relationShipValueLevels = null;
         private CharacterState currentState = CharacterState.BASE;
 
 
@@ -44,7 +49,7 @@ namespace Com.SchizophreniaStudios.LoneIllusionDestiny.LoneIllusion
 
         override public bool CheckState()
         {
-            float currentRelationshipLevel = PlayerData.relationshipLevel[this];
+            float currentRelationshipLevel = PlayerCharacter.relationshipLevel[this];
 
             CharacterState newState = CharacterState.BASE;
 

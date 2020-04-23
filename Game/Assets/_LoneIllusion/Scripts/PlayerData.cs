@@ -12,11 +12,17 @@ namespace Com.SchizophreniaStudios.LoneIllusionDestiny.LoneIllusion {
 
     [Serializable]
 	public class PlayerData {
-        static public uint cunningLevel = 0;
-        static public uint bluntLevel = 0;
-        static public uint trueLevel = 0;
-        static public uint nobleLevel = 0;
+         public uint cunningLevel = 0;
+         public uint bluntLevel = 0;
+         public uint trueLevel = 0;
+         public uint nobleLevel = 0;
 
-        static public Dictionary<CharacterChanging, float> relationshipLevel = new Dictionary<CharacterChanging, float>();
-	}
+         public Dictionary<CharacterChanging, float> relationshipLevel = new Dictionary<CharacterChanging, float>();
+
+
+        public static implicit operator string(PlayerData data)
+        {
+            return JsonUtility.ToJson(data);
+        }
+    }
 }

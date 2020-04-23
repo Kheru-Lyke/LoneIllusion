@@ -11,40 +11,48 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
 using Com.SchizophreniaStudios.LoneIllusionDestiny.LoneIllusion;
+using System.IO;
 
-namespace Com.SchizophreniaStudios.LoneIllusionDestiny.Common {
+namespace Com.SchizophreniaStudios.LoneIllusionDestiny.Common
+{
     public class GameManager : MonoBehaviour
     {
 
         [SerializeField] private DialogueChunk _currentDialogueChunk;
 
         [Header("UI management")]
-        [SerializeField] private TextMeshProUGUI text;
-        [SerializeField] private TextMeshProUGUI speakerName;
-        [SerializeField] private Transform choiceUI;
-        [SerializeField] private GameObject choiceButtonPrefab;
+        [SerializeField] private TextMeshProUGUI text = null;
+        [SerializeField] private TextMeshProUGUI speakerName = null;
+        [SerializeField] private Transform choiceUI = null;
+        [SerializeField] private GameObject choiceButtonPrefab = null;
 
         [Header("Character management")]
-        [SerializeField] private Transform left;
-        [SerializeField] private Transform center;
-        [SerializeField] private Transform right;
+        [SerializeField] private Transform left = null;
+        [SerializeField] private Transform center = null;
+        [SerializeField] private Transform right = null;
         [Space]
-        [SerializeField] private GameObject characterVisualPrefab;
+        [SerializeField] private GameObject characterVisualPrefab = null;
 
         [Header("Scene management")]
-        [SerializeField] private Image background;
-        [SerializeField] private AudioSource music;
-        [SerializeField] private AudioSource backgroundEffect;
+        [SerializeField] private Image background = null;
+        [SerializeField] private AudioSource music = null;
+        [SerializeField] private AudioSource backgroundEffect = null;
 
         private int lineIndex = 0;
-        private CharacterChanging currentSpeaker;
+        private CharacterChanging currentSpeaker = null;
         private Dictionary<CharacterChanging, GameObject> charactersInScene = new Dictionary<CharacterChanging, GameObject>();
-        private DialogueLine line;
+        private DialogueLine line = null;
 
 
         //  Dialogue management
         public void ReadLine()
         {
+            if (lineIndex >= CurrentDialogueChunk.Lines.Length)
+            {
+                Debug.LogWarning("[SCENE] No more lines to read in the current Dialogue Chunk");
+                return;
+            }
+
             line = CurrentDialogueChunk.Lines[lineIndex];
 
 
@@ -68,9 +76,6 @@ namespace Com.SchizophreniaStudios.LoneIllusionDestiny.Common {
             if (line is DialogueChoice) DisplayChoice();
 
             lineIndex++;
-
-            //  TEMP
-            PlayerData.bluntLevel = PlayerData.cunningLevel = PlayerData.nobleLevel = PlayerData.trueLevel = 3;
         }
 
         private void ChangeSpeakerState(CharacterChanging speaker)
@@ -144,10 +149,28 @@ namespace Com.SchizophreniaStudios.LoneIllusionDestiny.Common {
 
         public void AddCharacterToScene()
         {
+            if (charactersInScene.ContainsKey(line.Speaker))
+            {
+                Debug.LogWarning("[SCENE] Trying to add a character that already exists");
+                return;
+            }
             GameObject characterVisual = Instantiate(characterVisualPrefab, center);
 
             charactersInScene.Add(line.Speaker, characterVisual);
         }
+
+        public void ForceCharacterInScene(CharacterChanging character, Transform parent)
+        {
+            GameObject characterVisual = Instantiate(characterVisualPrefab, parent);
+
+            charactersInScene.Add(character, characterVisual);
+
+            Image visualIMG = characterVisual.GetComponent<Image>();
+            if (visualIMG != null) visualIMG.sprite = character.Sprites[Emotions.NONE];
+
+        }
+
+
         internal void RemoveCharacterFromScreen()
         {
             Destroy(charactersInScene[currentSpeaker]);
@@ -166,7 +189,7 @@ namespace Com.SchizophreniaStudios.LoneIllusionDestiny.Common {
 
         //  Scene Management
 
-        internal void ChangeScene(Sprite newBackground, AudioClip newMusic, AudioClip newBackgroundEffect)
+        public void ChangeScene(Sprite newBackground, AudioClip newMusic, AudioClip newBackgroundEffect)
         {
             background.sprite = newBackground;
 
@@ -196,6 +219,104 @@ namespace Com.SchizophreniaStudios.LoneIllusionDestiny.Common {
         private void OnDestroy()
         {
             if (this == instance) instance = null;
+        }
+
+        public void SaveProgression(int saveNumber = 0)
+        {
+            Save saveState = new Save();
+
+            saveState.background = background.sprite;
+            saveState.music = music.clip;
+            saveState.backgroundEffect = backgroundEffect.clip;
+            saveState.currentDialogue = CurrentDialogueChunk;
+            saveState.lineIndex = lineIndex - 1;
+
+            saveState.playerData = PlayerCharacter.GetDataJSON();
+
+            saveState.characters = GetCharacterPositions();
+
+            string filePath = Path.Combine(Application.persistentDataPath, "Save_" + saveNumber);
+            File.WriteAllText(filePath, saveState);
+        }
+
+        public void LoadProgression(int saveNumber)
+        {
+            string filePath = Path.Combine(Application.persistentDataPath, "Save_" + saveNumber);
+            Save saveState = JsonUtility.FromJson<Save>(File.ReadAllText(filePath));
+
+            PlayerCharacter.LoadDataJSON(saveState.playerData);
+
+            ChangeScene(saveState.background, saveState.music, saveState.backgroundEffect);
+            CurrentDialogueChunk = saveState.currentDialogue;
+            lineIndex = saveState.lineIndex;
+
+            LoadCharacters(saveState.characters);
+
+            ReadLine();
+        }
+
+        private void LoadCharacters(PositionCharacter_SerializableDictionary characters)
+        {
+            int length = characters.Count;
+            KeyValuePair<Position, CharacterChanging> chara;
+            Transform parent = center;
+
+            for (int i = 0; i < length; i++)
+            {
+                chara = characters.ElementAt(i);
+
+                switch (chara.Key)
+                {
+                    case Position.LEFT:
+                        parent = left;
+                        break;
+                    case Position.RIGHT:
+                        parent = right;
+                        break;
+                    default:
+                        parent = center;
+                        break;
+                }
+
+                ForceCharacterInScene(chara.Value, parent);
+            }
+        }
+
+        private PositionCharacter_SerializableDictionary GetCharacterPositions()
+        {
+            PositionCharacter_SerializableDictionary result = new PositionCharacter_SerializableDictionary();
+
+            int length = charactersInScene.Count;
+            KeyValuePair<CharacterChanging, GameObject> keyValuePair;
+
+            for (int i = 0; i < length; i++)
+            {
+                keyValuePair = charactersInScene.ElementAt(i);
+
+                if (keyValuePair.Value == center) result.Add(Position.CENTER, keyValuePair.Key);
+                else if (keyValuePair.Value == left) result.Add(Position.LEFT, keyValuePair.Key);
+                else result.Add(Position.RIGHT, keyValuePair.Key);
+            }
+
+            return result;
+        }
+    }
+
+    [Serializable]
+    public class Save
+    {
+        public Sprite background;
+        public AudioClip music;
+        public AudioClip backgroundEffect;
+        public PositionCharacter_SerializableDictionary characters = new PositionCharacter_SerializableDictionary();
+        public DialogueChunk currentDialogue;
+        public int lineIndex;
+
+        public string playerData;
+
+        public static implicit operator string(Save save)
+        {
+            return JsonUtility.ToJson(save);
         }
     }
 }

@@ -13,7 +13,7 @@ namespace Com.SchizophreniaStudios.LoneIllusionDestiny.Common.CharacterMovements
     )]
     public class MoveTo : CharacterMovement
     {
-        [SerializeField] private Position position;
+        [SerializeField] private Position position = Position.CENTER;
         public override void Move()
         {
             GameManager.Instance.MoveTo(position);

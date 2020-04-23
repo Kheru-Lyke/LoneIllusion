@@ -14,10 +14,10 @@ namespace Com.SchizophreniaStudios.LoneIllusionDestiny.Common.CharacterMovements
     )]
     public class ChangeScene : CharacterMovement
     {
-        [SerializeField] Sprite newBackground;
-        [SerializeField] AudioClip newMusic;
-        [SerializeField] AudioClip newBackgroundEffect;
-        [SerializeField] DialogueChunk nextDialogue;
+        [SerializeField] Sprite newBackground = null;
+        [SerializeField] AudioClip newMusic = null;
+        [SerializeField] AudioClip newBackgroundEffect = null;
+        [SerializeField] DialogueChunk nextDialogue = null;
         public override void Move()
         {
             GameManager.Instance.ChangeScene(newBackground, newMusic, newBackgroundEffect);

@@ -14,7 +14,7 @@ namespace Com.SchizophreniaStudios.LoneIllusionDestiny.Common {
     )]
     public class DialogueChunk : ScriptableObject {
 
-        [SerializeField] private DialogueLine[] _lines;
+        [SerializeField] private DialogueLine[] _lines = null;
 
         public DialogueLine[] Lines => _lines; 
     }
