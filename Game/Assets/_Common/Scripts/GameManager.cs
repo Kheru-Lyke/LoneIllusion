@@ -200,26 +200,6 @@ namespace Com.SchizophreniaStudios.LoneIllusionDestiny.Common
             backgroundEffect.Play();
         }
 
-        //  Instance related code
-        private static GameManager instance;
-        public static GameManager Instance { get { return instance; } }
-
-
-        private void Awake()
-        {
-            if (instance)
-            {
-                Destroy(gameObject);
-                return;
-            }
-
-            instance = this;
-        }
-
-        private void OnDestroy()
-        {
-            if (this == instance) instance = null;
-        }
 
         public void SaveProgression(int saveNumber = 0)
         {
@@ -237,6 +217,8 @@ namespace Com.SchizophreniaStudios.LoneIllusionDestiny.Common
 
             string filePath = Path.Combine(Application.persistentDataPath, "Save_" + saveNumber);
             File.WriteAllText(filePath, saveState);
+
+            ScreenshotHandler.Instance.TakeScreenshot(Screen.width, Screen.height, filePath);
         }
 
         public void LoadProgression(int saveNumber)
@@ -299,6 +281,27 @@ namespace Com.SchizophreniaStudios.LoneIllusionDestiny.Common
             }
 
             return result;
+        }
+
+        //  Instance related code
+        private static GameManager instance;
+        public static GameManager Instance { get { return instance; } }
+
+
+        private void Awake()
+        {
+            if (instance)
+            {
+                Destroy(gameObject);
+                return;
+            }
+
+            instance = this;
+        }
+
+        private void OnDestroy()
+        {
+            if (this == instance) instance = null;
         }
     }
 
