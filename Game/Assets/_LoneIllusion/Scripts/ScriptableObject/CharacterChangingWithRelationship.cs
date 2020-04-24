@@ -29,7 +29,12 @@ namespace Com.SchizophreniaStudios.LoneIllusionDestiny.LoneIllusion
 
         override public bool CheckState()
         {
-            float currentRelationshipLevel = PlayerCharacter.relationshipLevel[this];
+            float currentRelationshipLevel;
+            if (!PlayerCharacter.relationshipLevel.TryGetValue(this, out currentRelationshipLevel))
+            {
+                PlayerCharacter.relationshipLevel.Add(this, 0);
+                currentRelationshipLevel = 0;
+            }
 
             CharacterState newState = CharacterState.BASE;
 

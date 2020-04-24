@@ -13,7 +13,4 @@ MonoBehaviour:
   m_Name: Balanced
   m_EditorClassIdentifier: 
   _lines:
-  - {fileID: 11400000, guid: 80353c31a483ebc4ab847af3a3365265, type: 2}
-  - {fileID: 11400000, guid: 004f41d7b70c3824fb404b2bbbb3eb78, type: 2}
-  - {fileID: 11400000, guid: cc5a4587be25d434d995c75c5c6d6f30, type: 2}
-  - {fileID: 11400000, guid: 64f48f5d5d3d0a547bb99c0ca3f155db, type: 2}
+  - {fileID: 11400000, guid: a83ebc6b1ad8e304c84dcd8c0e0e6d1c, type: 2}

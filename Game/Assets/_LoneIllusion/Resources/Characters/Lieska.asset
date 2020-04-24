@@ -9,9 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: c422de73c50ce6849b03797b19208d9f, type: 3}
   m_Name: Lieska
-  m_EditorClassIdentifier: Assembly-CSharp:Com.SchizophreniaStudios.LoneIllusionDestiny.LoneIllusion:CharacterChanginWithRelationship
+  m_EditorClassIdentifier: 
   characterPerState:
     reorderableList:
       canAdd: 1
@@ -19,7 +19,7 @@ MonoBehaviour:
       draggable: 1
       expandable: 1
       multipleSelection: 1
-      isExpanded: 0
+      isExpanded: 1
       label:
         m_Text: Keys
         m_Image: {fileID: 0}
@@ -34,8 +34,13 @@ MonoBehaviour:
       elementNameOverride: 
       elementIcon: {fileID: 0}
     reqReferences: {fileID: 0}
-    isExpanded: 0
-    _keyValues: 
-    _keys: 
-    _values: []
-  relationShipValueLevels: []
+    isExpanded: 1
+    _keyValues: 000000000100000002000000
+    _keys: 000000000100000002000000
+    _values:
+    - {fileID: 11400000, guid: f11524bc2d11ff14dab4aff2d04174ad, type: 2}
+    - {fileID: 11400000, guid: f11524bc2d11ff14dab4aff2d04174ad, type: 2}
+    - {fileID: 11400000, guid: f11524bc2d11ff14dab4aff2d04174ad, type: 2}
+  relationShipValueLevels:
+  - 10
+  - 20

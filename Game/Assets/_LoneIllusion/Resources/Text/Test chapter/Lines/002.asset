@@ -15,7 +15,9 @@ MonoBehaviour:
   _speaker: {fileID: 11400000, guid: d09a7a2adb90bce4aaf2ca7c8c9a6d1b, type: 2}
   _text: Take a deep breath. You feel...
   _anonymous: 1
-  _characterMovement: {fileID: 11400000, guid: cf92ebb76fbe35040b23b8bd2ffe6f14, type: 2}
+  _characterMovement:
+  - {fileID: 11400000, guid: cf92ebb76fbe35040b23b8bd2ffe6f14, type: 2}
+  - {fileID: 11400000, guid: f8cb1c0748c34394eb57adfa618ecd3f, type: 2}
   _emotion: 0
   choices:
     reorderableList:

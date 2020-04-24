@@ -5,6 +5,7 @@
 
 using Com.SchizophreniaStudios.LoneIllusionDestiny.LoneIllusion;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Com.SchizophreniaStudios.LoneIllusionDestiny.Common
@@ -18,14 +19,14 @@ namespace Com.SchizophreniaStudios.LoneIllusionDestiny.Common
     {
 
         [SerializeField] protected CharacterChanging _speaker;
-        [SerializeField] protected string _text;
+        [SerializeField] public string _text;
         [SerializeField] protected bool _anonymous;
-        [SerializeField] protected CharacterMovement _characterMovement;
+        [SerializeField] protected List<CharacterMovement> _characterMovement = new List<CharacterMovement>();
         [SerializeField] protected Emotions _emotion;
 
         public CharacterChanging Speaker => _speaker;
         public string Text => _text;
-        public CharacterMovement CharacterMovement => _characterMovement;
+        public List<CharacterMovement> CharacterMovement => _characterMovement;
         public Emotions Emotion => _emotion;
         public bool Anonymous => _anonymous;
     }

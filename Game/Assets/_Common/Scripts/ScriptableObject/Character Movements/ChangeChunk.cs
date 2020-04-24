@@ -11,13 +11,12 @@ namespace Com.SchizophreniaStudios.LoneIllusionDestiny.Common.CharacterMovements
         fileName = "MoveTo",
         menuName = "Visual Novel/Movement/Change Chunk"
     )]
-    public class ChangeChunkAndRead : CharacterMovement
+    public class ChangeChunk : CharacterMovement
     {
-        [SerializeField] private DialogueChunk nextChunk;
+        [SerializeField] private DialogueChunk nextChunk = null;
         public override void Move()
         {
             GameManager.Instance.CurrentDialogueChunk = nextChunk;
-            GameManager.Instance.ReadLine();
         }
     }
 }

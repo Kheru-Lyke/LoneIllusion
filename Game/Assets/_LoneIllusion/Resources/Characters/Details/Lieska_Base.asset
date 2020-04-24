@@ -42,6 +42,6 @@ MonoBehaviour:
     - {fileID: 21300000, guid: 6bef4d426421a2a47836b2d4f90e5637, type: 3}
     - {fileID: 21300000, guid: 6bef4d426421a2a47836b2d4f90e5637, type: 3}
     - {fileID: 21300000, guid: 6bef4d426421a2a47836b2d4f90e5637, type: 3}
-  _textColor: {r: 1, g: 1, b: 1, a: 1}
+  _textColor: {r: 0, g: 0, b: 0, a: 1}
   _textFont: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   _textFontStyle: 0

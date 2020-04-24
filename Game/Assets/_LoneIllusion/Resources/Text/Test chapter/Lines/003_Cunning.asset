@@ -15,5 +15,7 @@ MonoBehaviour:
   _speaker: {fileID: 11400000, guid: d09a7a2adb90bce4aaf2ca7c8c9a6d1b, type: 2}
   _text: I feel it... the calm washes over me.
   _anonymous: 0
-  _characterMovement: {fileID: 11400000, guid: e707e0b4450ec8c4eb5eb0a2bd982c10, type: 2}
+  _characterMovement:
+  - {fileID: 11400000, guid: e707e0b4450ec8c4eb5eb0a2bd982c10, type: 2}
+  - {fileID: 11400000, guid: 83fcd2a0ca25c1c4c8bb52a5c3d3fe71, type: 2}
   _emotion: 0

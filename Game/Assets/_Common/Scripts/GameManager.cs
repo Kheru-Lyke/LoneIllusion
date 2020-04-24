@@ -47,6 +47,8 @@ namespace Com.SchizophreniaStudios.LoneIllusionDestiny.Common
         //  Dialogue management
         public void ReadLine()
         {
+
+
             if (lineIndex >= CurrentDialogueChunk.Lines.Length)
             {
                 Debug.LogWarning("[SCENE] No more lines to read in the current Dialogue Chunk");
@@ -55,17 +57,24 @@ namespace Com.SchizophreniaStudios.LoneIllusionDestiny.Common
 
             line = CurrentDialogueChunk.Lines[lineIndex];
 
-
-            line.CharacterMovement?.Move();
-            if (line.Speaker.CheckState())
-            {
-                ChangeSpeakerState(line.Speaker);
-            }
             if (currentSpeaker != line.Speaker)
             {
                 ChangeSpeaker(line.Speaker);
                 currentSpeaker = line.Speaker;
             }
+
+            int length = line.CharacterMovement.Count;
+            for (int i = 0; i < length; i++)
+            {
+                if (line.CharacterMovement[i] is ChangeChunk) ChunkChange = line.CharacterMovement[i].Move;
+                line.CharacterMovement[i].Move();
+            }
+
+            if (line.Speaker.CheckState())
+            {
+                ChangeSpeakerState(line.Speaker);
+            }
+
 
             if (line.Text != "") text.text = line.Text;
             if (line.Anonymous) speakerName.text = "???";
@@ -74,7 +83,11 @@ namespace Com.SchizophreniaStudios.LoneIllusionDestiny.Common
             UpdateCharacterSprite();
             if (line is DialogueChoice) DisplayChoice();
 
+
             lineIndex++;
+
+            ChunkChange?.Invoke();
+            ChunkChange = null;
         }
 
         private void ChangeSpeakerState(CharacterChanging speaker)
@@ -108,6 +121,8 @@ namespace Com.SchizophreniaStudios.LoneIllusionDestiny.Common
                     {
                         Destroy(Ui.transform.GetChild(j).gameObject);
                     }
+
+                    ReadLine();
                 });
             }
         }
@@ -284,6 +299,8 @@ namespace Com.SchizophreniaStudios.LoneIllusionDestiny.Common
 
         //  Instance related code
         private static GameManager instance;
+        private Action ChunkChange;
+
         public static GameManager Instance { get { return instance; } }
 
 

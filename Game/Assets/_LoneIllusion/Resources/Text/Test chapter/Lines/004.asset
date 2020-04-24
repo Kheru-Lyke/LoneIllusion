@@ -15,5 +15,5 @@ MonoBehaviour:
   _speaker: {fileID: 11400000, guid: d09a7a2adb90bce4aaf2ca7c8c9a6d1b, type: 2}
   _text: Thank you for playing. I hope you enjoyed this little test.
   _anonymous: 1
-  _characterMovement: {fileID: 0}
+  _characterMovement: []
   _emotion: 2
