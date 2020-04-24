@@ -48,7 +48,6 @@ namespace Com.SchizophreniaStudios.LoneIllusionDestiny.Common
         public void ReadLine()
         {
 
-
             if (lineIndex >= CurrentDialogueChunk.Lines.Length)
             {
                 Debug.LogWarning("[SCENE] No more lines to read in the current Dialogue Chunk");
@@ -223,7 +222,7 @@ namespace Com.SchizophreniaStudios.LoneIllusionDestiny.Common
             saveState.music = music.clip;
             saveState.backgroundEffect = backgroundEffect.clip;
             saveState.currentDialogue = CurrentDialogueChunk;
-            saveState.lineIndex = lineIndex - 1;
+            saveState.lineIndex = lineIndex;
 
             saveState.playerData = PlayerCharacter.GetDataJSON();
 
@@ -241,17 +240,17 @@ namespace Com.SchizophreniaStudios.LoneIllusionDestiny.Common
             Save saveState = JsonUtility.FromJson<Save>(File.ReadAllText(filePath));
 
             PlayerCharacter.LoadDataJSON(saveState.playerData);
+            LoadCharacters(saveState.characters);
 
             ChangeScene(saveState.background, saveState.music, saveState.backgroundEffect);
             CurrentDialogueChunk = saveState.currentDialogue;
             lineIndex = saveState.lineIndex;
 
-            LoadCharacters(saveState.characters);
 
             ReadLine();
         }
 
-        private void LoadCharacters(PositionCharacter_SerializableDictionary characters)
+        private void LoadCharacters(List<KeyValuePair<Position, CharacterChanging>> characters)
         {
             int length = characters.Count;
             KeyValuePair<Position, CharacterChanging> chara;
@@ -278,20 +277,23 @@ namespace Com.SchizophreniaStudios.LoneIllusionDestiny.Common
             }
         }
 
-        private PositionCharacter_SerializableDictionary GetCharacterPositions()
+        private List<KeyValuePair<Position, CharacterChanging>> GetCharacterPositions()
         {
-            PositionCharacter_SerializableDictionary result = new PositionCharacter_SerializableDictionary();
+            List<KeyValuePair<Position, CharacterChanging>> result = new List<KeyValuePair<Position, CharacterChanging>>();
 
             int length = charactersInScene.Count;
-            KeyValuePair<CharacterChanging, GameObject> keyValuePair;
+            KeyValuePair<CharacterChanging, GameObject> originKey;
+            KeyValuePair<Position, CharacterChanging> resultKey;
 
             for (int i = 0; i < length; i++)
             {
-                keyValuePair = charactersInScene.ElementAt(i);
+                originKey = charactersInScene.ElementAt(i);
 
-                if (keyValuePair.Value == center) result.Add(Position.CENTER, keyValuePair.Key);
-                else if (keyValuePair.Value == left) result.Add(Position.LEFT, keyValuePair.Key);
-                else result.Add(Position.RIGHT, keyValuePair.Key);
+                if (originKey.Value == center) resultKey = new KeyValuePair<Position, CharacterChanging>(Position.CENTER, originKey.Key);
+                else if (originKey.Value == left) resultKey = new KeyValuePair<Position, CharacterChanging>(Position.LEFT, originKey.Key);
+                else resultKey = new KeyValuePair<Position, CharacterChanging>(Position.RIGHT, originKey.Key);
+
+                result.Add(resultKey);
             }
 
             return result;
@@ -327,7 +329,7 @@ namespace Com.SchizophreniaStudios.LoneIllusionDestiny.Common
         public Sprite background;
         public AudioClip music;
         public AudioClip backgroundEffect;
-        public PositionCharacter_SerializableDictionary characters = new PositionCharacter_SerializableDictionary();
+        public List<KeyValuePair<Position, CharacterChanging>> characters = new List<KeyValuePair<Position, CharacterChanging>>();
         public DialogueChunk currentDialogue;
         public int lineIndex;
 
