@@ -10,8 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 61d1b4255ddef1e4e957908e55cb1912, type: 3}
-  m_Name: Chunk 1
+  m_Name: Cunning
   m_EditorClassIdentifier: 
   _lines:
-  - {fileID: 11400000, guid: d5400d5675b89584f9caf08a3833d9c4, type: 2}
-  - {fileID: 11400000, guid: e942a79ca9bcc8d40ba5a15f6a1a7a20, type: 2}
+  - {fileID: 11400000, guid: 004f41d7b70c3824fb404b2bbbb3eb78, type: 2}

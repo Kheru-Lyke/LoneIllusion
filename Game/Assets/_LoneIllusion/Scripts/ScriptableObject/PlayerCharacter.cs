@@ -42,10 +42,10 @@ namespace Com.SchizophreniaStudios.LoneIllusionDestiny.LoneIllusion {
         [SerializeField] private PlayerStateCharacter_SerializableDictionary characterPerState = null;
         private PlayerState currentState = PlayerState.CAT_BASE;
 
-        static private uint blunt = 0;
-        static private uint cunning = 0;
-        static private uint noble = 0;
-        static private uint lTrue = 0;
+        static public int blunt = 0;
+        static public int cunning = 0;
+        static public int noble = 0;
+        static public int lTrue = 0;
 
         static public Dictionary<CharacterChanging, float> relationshipLevel = new Dictionary<CharacterChanging, float>();
 
@@ -90,6 +90,8 @@ namespace Com.SchizophreniaStudios.LoneIllusionDestiny.LoneIllusion {
             }
 
 
+            //TEMP
+            Debug.Log(blunt + " : " + cunning + " : " + noble + " : " + lTrue+" - "+newState.ToString());
             if (currentState != newState)
             {
                 currentState = newState;

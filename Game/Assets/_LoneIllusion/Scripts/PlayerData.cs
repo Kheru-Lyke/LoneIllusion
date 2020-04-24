@@ -12,10 +12,10 @@ namespace Com.SchizophreniaStudios.LoneIllusionDestiny.LoneIllusion {
 
     [Serializable]
 	public class PlayerData {
-         public uint cunningLevel = 0;
-         public uint bluntLevel = 0;
-         public uint trueLevel = 0;
-         public uint nobleLevel = 0;
+         public int cunningLevel = 0;
+         public int bluntLevel = 0;
+         public int trueLevel = 0;
+         public int nobleLevel = 0;
 
          public Dictionary<CharacterChanging, float> relationshipLevel = new Dictionary<CharacterChanging, float>();
 

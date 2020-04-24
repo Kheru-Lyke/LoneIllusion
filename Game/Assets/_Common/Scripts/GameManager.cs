@@ -56,10 +56,10 @@ namespace Com.SchizophreniaStudios.LoneIllusionDestiny.Common
             line = CurrentDialogueChunk.Lines[lineIndex];
 
 
+            line.CharacterMovement?.Move();
             if (line.Speaker.CheckState())
             {
                 ChangeSpeakerState(line.Speaker);
-                return;
             }
             if (currentSpeaker != line.Speaker)
             {
@@ -71,7 +71,6 @@ namespace Com.SchizophreniaStudios.LoneIllusionDestiny.Common
             if (line.Anonymous) speakerName.text = "???";
             else speakerName.text = line.Speaker.CharacterName;
 
-            line.CharacterMovement?.Move();
             UpdateCharacterSprite();
             if (line is DialogueChoice) DisplayChoice();
 
@@ -80,7 +79,9 @@ namespace Com.SchizophreniaStudios.LoneIllusionDestiny.Common
 
         private void ChangeSpeakerState(CharacterChanging speaker)
         {
+            //TEMP
             Debug.Log("This is a change cutscene! Congrats! It's " + speaker.CharacterName);
+            UpdateCharacterSprite();
         }
 
         private void DisplayChoice()
@@ -107,8 +108,6 @@ namespace Com.SchizophreniaStudios.LoneIllusionDestiny.Common
                     {
                         Destroy(Ui.transform.GetChild(j).gameObject);
                     }
-
-                    ReadLine();
                 });
             }
         }

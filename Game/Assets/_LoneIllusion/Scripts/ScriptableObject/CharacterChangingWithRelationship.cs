@@ -11,31 +11,11 @@ using UnityEngine;
 
 namespace Com.SchizophreniaStudios.LoneIllusionDestiny.LoneIllusion
 {
-
     [CreateAssetMenu(
         fileName = "Character",
         menuName = "Visual Novel/Character"
     )]
-    [Serializable]
-    public abstract class CharacterChanging : ScriptableObject
-    {
-
-        public static implicit operator Character(CharacterChanging character)
-        {
-            return character.ReturnCurrentCharacter();
-        }
-
-        abstract public bool CheckState();
-        abstract protected Character ReturnCurrentCharacter();
-
-        public string CharacterName => ReturnCurrentCharacter().CharacterName;
-        public TMP_FontAsset TextFont => ReturnCurrentCharacter().TextFont;
-        public FontStyles TextFontStyle => ReturnCurrentCharacter().TextFontStyle;
-        public Color TextColor => ReturnCurrentCharacter().TextColor;
-        public EnumSprite_SerializableDictionary Sprites => ReturnCurrentCharacter().Sprites;
-    }
-
-    public class CharacterChanginWithRelationship : CharacterChanging
+    public class CharacterChangingWithRelationship : CharacterChanging
     {
         [SerializeField] private StateCharacter_SerializableDictionary characterPerState = null;
         [SerializeField] private List<float> relationShipValueLevels = null;
