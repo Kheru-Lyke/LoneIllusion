@@ -51,10 +51,14 @@ namespace Com.SchizophreniaStudios.LoneIllusionDestiny.Common
             if (lineIndex >= CurrentDialogueChunk.Lines.Length)
             {
                 Debug.LogWarning("[SCENE] No more lines to read in the current Dialogue Chunk");
+                if (!text.GetComponent<TypewriterModuleUI>().Reveal(CurrentDialogueChunk.Lines[lineIndex-1].Text.Length)) return;
                 return;
             }
 
             line = CurrentDialogueChunk.Lines[lineIndex];
+
+            if (!text.GetComponent<TypewriterModuleUI>().Reveal(line.Text.Length)) return;
+            if (line.Text != "") text.text = line.Text;
 
             if (currentSpeaker != line.Speaker)
             {
@@ -74,8 +78,6 @@ namespace Com.SchizophreniaStudios.LoneIllusionDestiny.Common
                 ChangeSpeakerState(line.Speaker);
             }
 
-
-            if (line.Text != "") text.text = line.Text;
             if (line.Anonymous) speakerName.text = "???";
             else speakerName.text = line.Speaker.CharacterName;
 

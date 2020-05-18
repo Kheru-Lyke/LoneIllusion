@@ -7804,6 +7804,7 @@ GameObject:
   - component: {fileID: 1931380259}
   - component: {fileID: 1931380261}
   - component: {fileID: 1931380260}
+  - component: {fileID: 1931380262}
   m_Layer: 8
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -7956,6 +7957,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1931380258}
   m_CullTransparentMesh: 0
+--- !u!114 &1931380262
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1931380258}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f17a8ae0a30fd3f4da65ede33bfd0d56, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  secondsBetweenCharacters: 0.05
 --- !u!1 &1939476071
 GameObject:
   m_ObjectHideFlags: 0
