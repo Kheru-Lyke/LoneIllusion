@@ -13,7 +13,33 @@ MonoBehaviour:
   m_Name: 002
   m_EditorClassIdentifier: 
   _speaker: {fileID: 11400000, guid: d09a7a2adb90bce4aaf2ca7c8c9a6d1b, type: 2}
-  _text: Take a deep breath. You feel...
+  _text:
+    reorderableList:
+      canAdd: 1
+      canRemove: 1
+      draggable: 1
+      expandable: 1
+      multipleSelection: 1
+      isExpanded: 0
+      label:
+        m_Text: Keys
+        m_Image: {fileID: 0}
+        m_Tooltip: 
+      headerHeight: 18
+      footerHeight: 13
+      slideEasing: 0.15
+      verticalSpacing: 2
+      showDefaultBackground: 1
+      elementDisplayType: 0
+      elementNameProperty: 
+      elementNameOverride: 
+      elementIcon: {fileID: 0}
+    reqReferences: {fileID: 0}
+    isExpanded: 0
+    _keyValues: 0a000000
+    _keys: 0a000000
+    _values:
+    - Let's proceed to the test, shall we? I feel...
   _anonymous: 1
   _characterMovement:
   - {fileID: 11400000, guid: cf92ebb76fbe35040b23b8bd2ffe6f14, type: 2}
@@ -43,14 +69,14 @@ MonoBehaviour:
     reqReferences: {fileID: 0}
     isExpanded: 1
     _keyValues:
-    - Full of rage
     - Calm and deadly
+    - Full of rage
     - Perfectly balanced
     _keys:
-    - Full of rage
     - Calm and deadly
+    - Full of rage
     - Perfectly balanced
     _values:
-    - {fileID: 11400000, guid: b02f8ce1d87985348a90356f99ff8f3f, type: 2}
     - {fileID: 11400000, guid: 5824c2469766db448a18c34b274407a8, type: 2}
+    - {fileID: 11400000, guid: b02f8ce1d87985348a90356f99ff8f3f, type: 2}
     - {fileID: 11400000, guid: fd6b8c78db5c88240800f8eda7e6e8f1, type: 2}

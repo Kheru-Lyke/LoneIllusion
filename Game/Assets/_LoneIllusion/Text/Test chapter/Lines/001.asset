@@ -39,7 +39,7 @@ MonoBehaviour:
     _keyValues: 0a000000
     _keys: 0a000000
     _values:
-    - This is mostly a test
+    - This is mostly a test. See? Works well! I'm getting somewhere.
   _anonymous: 1
   _characterMovement:
   - {fileID: 11400000, guid: cf92ebb76fbe35040b23b8bd2ffe6f14, type: 2}

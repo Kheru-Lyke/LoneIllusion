@@ -65,7 +65,7 @@ MonoBehaviour:
     - id: 
       test: Infinity
       test2: 
-      quat: {x: Infinity, y: Infinity, z: Infinity, w: Infinity}
+      quat: {x: Infinity, y: Infinity, z: Infinity, w: 7.53}
       childTest:
       - myChildColor: {r: 0, g: 0, b: 0, a: 0}
         myChildBool: 0
@@ -227,7 +227,7 @@ MonoBehaviour:
     - id: 
       test: Infinity
       test2: 
-      quat: {x: Infinity, y: Infinity, z: Infinity, w: Infinity}
+      quat: {x: Infinity, y: Infinity, z: Infinity, w: 7.53}
       childTest:
       - myChildColor: {r: 0, g: 0, b: 0, a: 0}
         myChildBool: 0

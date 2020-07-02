@@ -11,11 +11,11 @@ using UnityEngine;
 
 namespace Com.SchizophreniaStudios.LoneIllusionDestiny.Common
 {
-
     [CreateAssetMenu(
         fileName = "Line",
         menuName = "Visual Novel/Dialogue/Line"
     )]
+    [Serializable]
     public class DialogueLine : ScriptableObject
     {
 
@@ -27,7 +27,9 @@ namespace Com.SchizophreniaStudios.LoneIllusionDestiny.Common
 
         public CharacterChanging Speaker => _speaker;
         public string Text { get {
-                return _text[Settings.language];
+                if (!_text.TryGetValue(Settings.language, out string text)) text = "language error, no translation available";
+
+                return text;
             } }
         public List<CharacterMovement> CharacterMovement => _characterMovement;
         public Emotions Emotion => _emotion;

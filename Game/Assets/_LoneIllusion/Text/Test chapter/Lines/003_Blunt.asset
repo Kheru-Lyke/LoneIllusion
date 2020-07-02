@@ -13,7 +13,33 @@ MonoBehaviour:
   m_Name: 003_Blunt
   m_EditorClassIdentifier: 
   _speaker: {fileID: 11400000, guid: d09a7a2adb90bce4aaf2ca7c8c9a6d1b, type: 2}
-  _text: I feel it... The seething rage...
+  _text:
+    reorderableList:
+      canAdd: 1
+      canRemove: 1
+      draggable: 1
+      expandable: 1
+      multipleSelection: 1
+      isExpanded: 0
+      label:
+        m_Text: Keys
+        m_Image: {fileID: 0}
+        m_Tooltip: 
+      headerHeight: 18
+      footerHeight: 13
+      slideEasing: 0.15
+      verticalSpacing: 2
+      showDefaultBackground: 1
+      elementDisplayType: 0
+      elementNameProperty: 
+      elementNameOverride: 
+      elementIcon: {fileID: 0}
+    reqReferences: {fileID: 0}
+    isExpanded: 0
+    _keyValues: 0a000000
+    _keys: 0a000000
+    _values:
+    - My rage is UNDYING
   _anonymous: 0
   _characterMovement:
   - {fileID: 11400000, guid: 04374080a958b274ab8f01bea864e010, type: 2}
