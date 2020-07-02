@@ -32,5 +32,7 @@ namespace Com.SchizophreniaStudios.LoneIllusionDestiny.Common
         public List<CharacterMovement> CharacterMovement => _characterMovement;
         public Emotions Emotion => _emotion;
         public bool Anonymous => _anonymous;
+
+        public LanguageString_SerializableDictionnary FullText { get => _text; set => _text = value; }
     }
 }

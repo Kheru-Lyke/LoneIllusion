@@ -292,7 +292,7 @@ namespace RotaryHeart.Lib.SerializableDictionary
             SerializedProperty listProp = GetReferences(property);
 
             reqReferences.isExpanded = false;
-            property.isExpanded = false;
+            property.isExpanded = true;
 
             title = label.text;
 
