@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ffe11ebf059572740b547e4c52d5c39e, type: 3}
-  m_Name: 004
+  m_Name: 005
   m_EditorClassIdentifier: 
   _speaker: {fileID: 11400000, guid: a5fb7623b0afcba489f9a5362985ee91, type: 2}
   _text:
@@ -39,7 +39,8 @@ MonoBehaviour:
     _keyValues: 0a000000
     _keys: 0a000000
     _values:
-    - I will now showcase emotion changing (there are no animations yet)
+    - I will now showcase character movement on screen (there are no animations yet)
   _anonymous: 0
-  _characterMovement: []
-  _emotion: 1
+  _characterMovement:
+  - {fileID: 11400000, guid: f8cb1c0748c34394eb57adfa618ecd3f, type: 2}
+  _emotion: 2

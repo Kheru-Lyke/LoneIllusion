@@ -44,36 +44,38 @@ namespace Com.SchizophreniaStudios.LoneIllusionDestiny.Common
         private DialogueLine line = null;
 
 
-        //  Dialogue management
+        /// <summary>
+        /// Read a line, applies the proper changes and readies to read the next line.
+        /// </summary>
         public void ReadLine()
         {
 
-            if (lineIndex >= CurrentDialogueChunk.Lines.Length)
+            if (lineIndex >= CurrentDialogueChunk.Lines.Length)                     //No more lines in this chunk, prevents error
             {
                 Debug.LogWarning("[SCENE] No more lines to read in the current Dialogue Chunk");
-                if (!text.GetComponent<TypewriterModuleUI>().Reveal(CurrentDialogueChunk.Lines[lineIndex-1].Text.Length)) return;
+                if (!text.GetComponent<TypewriterModuleUI>().Reveal(CurrentDialogueChunk.Lines[lineIndex-1].Text.Length)) return;   //Typewriter-reveal text management
                 return;
             }
 
             line = CurrentDialogueChunk.Lines[lineIndex];
 
-            if (!text.GetComponent<TypewriterModuleUI>().Reveal(line.Text.Length)) return;
+            if (!text.GetComponent<TypewriterModuleUI>().Reveal(line.Text.Length)) return;      //If the function was called to reveal the text
             if (line.Text != "") text.text = line.Text;
 
-            if (currentSpeaker != line.Speaker)
+            if (currentSpeaker != line.Speaker)                 //Mangage speaker if it changed since the last line
             {
                 ChangeSpeaker(line.Speaker);
                 currentSpeaker = line.Speaker;
             }
 
             int length = line.CharacterMovement.Count;
-            for (int i = 0; i < length; i++)
+            for (int i = 0; i < length; i++)                    //Manage character movements for this line, in order
             {
-                if (line.CharacterMovement[i] is ChangeChunk) ChunkChange = line.CharacterMovement[i].Move;
+                if (line.CharacterMovement[i] is ChangeChunk) ChunkChange = line.CharacterMovement[i].Move;     //Manage the dialogue chunk changes
                 line.CharacterMovement[i].Move();
             }
 
-            if (line.Speaker.CheckState())
+            if (line.Speaker.CheckState())                      //Manage the character forms changes with stats
             {
                 ChangeSpeakerState(line.Speaker);
             }
@@ -81,16 +83,20 @@ namespace Com.SchizophreniaStudios.LoneIllusionDestiny.Common
             if (line.Anonymous) speakerName.text = "???";
             else speakerName.text = line.Speaker.CharacterName;
 
-            UpdateCharacterSprite();
+            UpdateCharacterSprite();                            //Manage sprite displayed with form & emotion
             if (line is DialogueChoice) DisplayChoice();
 
 
             lineIndex++;
 
-            ChunkChange?.Invoke();
+            ChunkChange?.Invoke();          //Change chunk at the end if necessary
             ChunkChange = null;
         }
 
+        /// <summary>
+        /// Manages the cutscene for a character changing state
+        /// </summary>
+        /// <param name="speaker">The character changing state</param>
         private void ChangeSpeakerState(CharacterChanging speaker)
         {
             //TEMP
@@ -98,6 +104,9 @@ namespace Com.SchizophreniaStudios.LoneIllusionDestiny.Common
             UpdateCharacterSprite();
         }
 
+        /// <summary>
+        /// Shows the choice UI
+        /// </summary>
         private void DisplayChoice()
         {
             CanvasGroup Ui = choiceUI.GetComponentInParent<CanvasGroup>();
@@ -128,6 +137,7 @@ namespace Com.SchizophreniaStudios.LoneIllusionDestiny.Common
             }
         }
 
+
         public DialogueChunk CurrentDialogueChunk
         {
             get => _currentDialogueChunk;
@@ -143,7 +153,10 @@ namespace Com.SchizophreniaStudios.LoneIllusionDestiny.Common
             }
         }
 
-        //  Textbox management
+        /// <summary>
+        /// Textbox management (text style, etc...)
+        /// </summary>
+        /// <param name="newSpeaker">The character speaking</param>
         private void ChangeSpeaker(CharacterChanging newSpeaker)
         {
             text.font = newSpeaker.TextFont;
@@ -151,7 +164,9 @@ namespace Com.SchizophreniaStudios.LoneIllusionDestiny.Common
             text.color = newSpeaker.TextColor;
         }
 
-        //  Character management
+        /// <summary>
+        /// Automatically manages character sprite (state / emotion)
+        /// </summary>
         private void UpdateCharacterSprite()
         {
             charactersInScene.TryGetValue(line.Speaker, out GameObject visual);
@@ -162,6 +177,9 @@ namespace Com.SchizophreniaStudios.LoneIllusionDestiny.Common
             }
         }
 
+        /// <summary>
+        /// Creates a new character visual with the current line speaker parameters
+        /// </summary>
         public void AddCharacterToScene()
         {
             if (charactersInScene.ContainsKey(line.Speaker))
@@ -174,6 +192,11 @@ namespace Com.SchizophreniaStudios.LoneIllusionDestiny.Common
             charactersInScene.Add(line.Speaker, characterVisual);
         }
 
+        /// <summary>
+        /// Forces a character in the scene, no check if the character already exists
+        /// </summary>
+        /// <param name="character">The character to force in the scene</param>
+        /// <param name="parent">The part of the scene to add the character to</param>
         public void ForceCharacterInScene(CharacterChanging character, Transform parent)
         {
             GameObject characterVisual = Instantiate(characterVisualPrefab, parent);
@@ -184,7 +207,6 @@ namespace Com.SchizophreniaStudios.LoneIllusionDestiny.Common
             if (visualIMG != null) visualIMG.sprite = character.Sprites[Emotions.NONE];
 
         }
-
 
         internal void RemoveCharacterFromScreen()
         {
@@ -202,8 +224,12 @@ namespace Com.SchizophreniaStudios.LoneIllusionDestiny.Common
             charactersInScene[line.Speaker]?.transform.SetParent(target);
         }
 
-        //  Scene Management
-
+        /// <summary>
+        /// Scene management
+        /// </summary>
+        /// <param name="newBackground">The background image to use</param>
+        /// <param name="newMusic">The music to use</param>
+        /// <param name="newBackgroundEffect">The ambient sound / background noise to use</param>
         public void ChangeScene(Sprite newBackground, AudioClip newMusic, AudioClip newBackgroundEffect)
         {
             background.sprite = newBackground;
@@ -215,7 +241,6 @@ namespace Com.SchizophreniaStudios.LoneIllusionDestiny.Common
             backgroundEffect.Play();
         }
 
-
         public void SaveProgression(int saveNumber = 0)
         {
             Save saveState = new Save();
@@ -224,16 +249,16 @@ namespace Com.SchizophreniaStudios.LoneIllusionDestiny.Common
             saveState.music = music.clip;
             saveState.backgroundEffect = backgroundEffect.clip;
             saveState.currentDialogue = CurrentDialogueChunk;
-            saveState.lineIndex = lineIndex;
+            saveState.lineIndex = lineIndex;                            //Save the progression in the story
 
-            saveState.playerData = PlayerCharacter.GetDataJSON();
+            saveState.playerData = PlayerCharacter.GetDataJSON();       //Save the player's stats
 
-            saveState.characters = GetCharacterPositions();
+            saveState.characters = GetCharacterPositions();             //Save the character's position on the screen
 
             string filePath = Path.Combine(Application.persistentDataPath, "Save_" + saveNumber);
             File.WriteAllText(filePath, saveState);
 
-            ScreenshotHandler.Instance.TakeScreenshot(Screen.width, Screen.height, filePath);
+            ScreenshotHandler.Instance.TakeScreenshot(Screen.width, Screen.height, filePath);       //Add a screenshot to the save
         }
 
         public void LoadProgression(int saveNumber)
@@ -247,7 +272,6 @@ namespace Com.SchizophreniaStudios.LoneIllusionDestiny.Common
             ChangeScene(saveState.background, saveState.music, saveState.backgroundEffect);
             CurrentDialogueChunk = saveState.currentDialogue;
             lineIndex = saveState.lineIndex;
-
 
             ReadLine();
         }

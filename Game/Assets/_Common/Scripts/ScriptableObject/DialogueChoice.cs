@@ -14,7 +14,6 @@ namespace Com.SchizophreniaStudios.LoneIllusionDestiny.Common {
     )]
     public class DialogueChoice : DialogueLine
     {
-
         [SerializeField] private StringDialogueChunk_SerializableDictionary choices = new StringDialogueChunk_SerializableDictionary();
 
         public StringDialogueChunk_SerializableDictionary Choices => choices; 

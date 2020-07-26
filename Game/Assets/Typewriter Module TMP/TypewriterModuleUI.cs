@@ -10,14 +10,18 @@ public class TypewriterModuleUI : MonoBehaviour {
 
     private Coroutine currentCoroutine = null;
 
-    // Start is called before the first frame update
     void Start() {
         text = GetComponent<TextMeshProUGUI>();
     }
 
+    /// <summary>
+    /// Shows the entire text
+    /// </summary>
+    /// <param name="totalLength">Length of the text to reveal</param>
+    /// <returns>If the text was gradually revealed (false if instantly shown)</returns>
     public bool Reveal(int totalLength) {
 
-        if (currentCoroutine != null) {
+        if (currentCoroutine != null) {             //If called when the text was gradually revealing, shows it entirely and instantly
             StopCoroutine(currentCoroutine);
             text.maxVisibleCharacters = text.textInfo.characterCount;
 

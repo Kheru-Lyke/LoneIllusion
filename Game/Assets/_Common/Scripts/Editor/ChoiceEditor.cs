@@ -21,9 +21,7 @@ public class ChoiceEditor : LineEditor {
     public override void OnInspectorGUI() {
         base.OnInspectorGUI();
 
-        
         EditorGUILayout.PropertyField(choices);
-
 
         serializedObject.ApplyModifiedProperties();
     }

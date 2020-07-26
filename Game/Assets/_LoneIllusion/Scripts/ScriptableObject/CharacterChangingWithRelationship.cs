@@ -30,7 +30,7 @@ namespace Com.SchizophreniaStudios.LoneIllusionDestiny.LoneIllusion
         override public bool CheckState()
         {
             float currentRelationshipLevel;
-            if (!PlayerCharacter.relationshipLevel.TryGetValue(this, out currentRelationshipLevel))
+            if (!PlayerCharacter.relationshipLevel.TryGetValue(this, out currentRelationshipLevel))         //New relationship, no stat yet
             {
                 PlayerCharacter.relationshipLevel.Add(this, 0);
                 currentRelationshipLevel = 0;
